@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/lightblack"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/TitleofBMI"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/notosans"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:text="BMI Calculator"
+        android:textColor="@color/white"
+        android:textSize="25sp"
+        android:layout_gravity="center" />
+
+    <!-- Check gender-->
+    <LinearLayout
+        android:id="@+id/genderLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="20dp">
+
+        <!-- Female Button Layout -->
+        <LinearLayout
+            android:id="@+id/femaleLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corners"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:layout_marginEnd="10dp">
+
+            <TextView
+                android:id="@+id/Female_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/notosans"
+                android:textSize="13dp"
+                android:text="Female"
+                android:textColor="@color/white"
+                android:paddingBottom="10dp"
+                android:layout_gravity="center"/>
+
+            <ImageButton
+                android:id="@+id/imageButtonfemale"
+                android:layout_width="wrap_content"
+                android:layout_height="65dp"
+                android:scaleType="fitCenter"
+                android:background="@null"
+                app:srcCompat="@drawable/female"/>
+        </LinearLayout>
+
+        <!-- Male Button Layout -->
+        <LinearLayout
+            android:id="@+id/maleLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corners"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:layout_marginStart="10dp">
+
+            <TextView
+                android:id="@+id/Male_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/notosans"
+                android:textSize="13dp"
+                android:text="Male"
+                android:textColor="@color/white"
+                android:paddingBottom="10dp"/>
+
+            <ImageButton
+                android:id="@+id/imageButtonmale"
+                android:layout_width="wrap_content"
+                android:layout_height="65dp"
+                android:background="@null"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/male" />
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+
+    <Switch
+        android:id="@+id/genderswitch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="I'd like to keep my gender private"
+        android:textColor="@color/white"
+        android:textSize="12dp"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"/>
+
+
+    <!-- Input Section: Weight and Height -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="30dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            >
+
+            <TextView
+                android:id="@+id/Weight_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/notosans"
+                android:textSize="13dp"
+                android:text="Weight"
+                android:textColor="@color/white"
+                />
+
+            <EditText
+                android:id="@+id/inputweight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/notosans"
+                android:textColor="@color/white"
+                android:hint="kg"
+
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/Height_Selection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/notosans"
+                android:textColor="@color/white"
+                android:textSize="13sp"
+                android:text="Height" />
+
+            <EditText
+                android:id="@+id/inputheight"
+                android:textColor="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/notosans"
+                android:hint="cm"
+                    />
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_corners"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_gravity="center">
+
+        <TextView
+            android:id="@+id/BMICaculator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:paddingTop="16dp">
+
+        <Button
+            android:id="@+id/submitbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            android:layout_marginEnd="8dp"/> <!-- Add margin for spacing -->
+
+        <Button
+            android:id="@+id/resetbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reset"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>
