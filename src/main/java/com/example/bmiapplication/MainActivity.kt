@@ -3,18 +3,13 @@ package com.example.bmiapplication
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.LinearLayout
-import android.widget.Switch
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import kotlin.math.pow
+import android.content.Intent
 
 class MainActivity : AppCompatActivity() {
 
@@ -22,14 +17,15 @@ class MainActivity : AppCompatActivity() {
     private lateinit var inputHeight: EditText
     private lateinit var submitButton: Button
     private lateinit var resetButton: Button
-    private lateinit var bmiResult: TextView
     private lateinit var imageButtonMale: ImageButton
     private lateinit var imageButtonFemale: ImageButton
-    private lateinit var genderSwitch: Switch
     private lateinit var genderLayout: LinearLayout
+    private lateinit var ageText: TextView
+    private lateinit var weightUnitSpinner: Spinner
+    private lateinit var heightUnitSpinner: Spinner
 
-    private var isMaleSelected = false
-    private var isFemaleSelected = false
+    private var gender: String? = null // Store gender as "M" or "F"
+    private var age = 20
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,85 +44,126 @@ class MainActivity : AppCompatActivity() {
         inputHeight = findViewById(R.id.inputheight)
         submitButton = findViewById(R.id.submitbutton)
         resetButton = findViewById(R.id.resetbutton)
-        bmiResult = findViewById(R.id.BMICaculator)
         imageButtonMale = findViewById(R.id.imageButtonmale)
         imageButtonFemale = findViewById(R.id.imageButtonfemale)
-        genderSwitch = findViewById(R.id.genderswitch)
         genderLayout = findViewById(R.id.genderLayout) // LinearLayout for gender buttons
+        ageText = findViewById(R.id.ageText)
+        weightUnitSpinner = findViewById(R.id.weightUnitSpinner)
+        heightUnitSpinner = findViewById(R.id.heightUnitSpinner)
+
+        val plusButton: ImageButton = findViewById(R.id.imageplus)
+        val minusButton: ImageButton = findViewById(R.id.imageminus)
+
+        plusButton.setOnClickListener { incrementAge() }
+        minusButton.setOnClickListener { decrementAge() }
+
+        setupSpinners()
 
         // Set click listeners
         submitButton.setOnClickListener { handleSubmission() }
         resetButton.setOnClickListener { resetInputs() }
 
-        imageButtonMale.setOnClickListener {
-            selectMale()
-        }
+        imageButtonMale.setOnClickListener { selectMale() }
+        imageButtonFemale.setOnClickListener { selectFemale() }
+    }
 
-        imageButtonFemale.setOnClickListener {
-            selectFemale()
+    private fun setupSpinners() {
+        // Setup weight unit spinner
+        val weightUnits = arrayOf("kg", "lb")
+        val weightAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, weightUnits)
+        weightAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        weightUnitSpinner.adapter = weightAdapter
+
+        // Setup height unit spinner
+        val heightUnits = arrayOf("cm", "ft", "in")
+        val heightAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, heightUnits)
+        heightAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        heightUnitSpinner.adapter = heightAdapter
+    }
+
+    private fun incrementAge() {
+        age++
+        updateAgeDisplay()
+    }
+
+    private fun decrementAge() {
+        if (age > 0) {
+            age--
+            updateAgeDisplay()
         }
+    }
+
+    private fun updateAgeDisplay() {
+        ageText.text = "Age: $age"
     }
 
     private fun selectMale() {
-        if (isMaleSelected) {
-            // If male is already selected, toggle it off
-            isMaleSelected = false
-            genderLayout.setBackgroundColor(Color.TRANSPARENT)
-            imageButtonMale.setBackgroundColor(Color.TRANSPARENT)
-            imageButtonFemale.setBackgroundColor(Color.TRANSPARENT)
-            genderSwitch.isEnabled = true // Enable switch again
-
-        } else {
-            isMaleSelected = true
-            isFemaleSelected = false
-            imageButtonMale.setBackgroundColor(Color.LTGRAY) // Reset male button color
-            imageButtonFemale.setBackgroundColor(Color.TRANSPARENT) // Reset female button color
-            genderSwitch.isEnabled = false // Disable switch
-
-        }
+        gender = "M" // Set gender for Male
+        imageButtonMale.setBackgroundColor(Color.LTGRAY)
+        imageButtonFemale.setBackgroundColor(Color.TRANSPARENT)
     }
 
     private fun selectFemale() {
-        if (isFemaleSelected) {
-            // If female is already selected, toggle it off
-            isFemaleSelected = false
-            genderLayout.setBackgroundColor(Color.TRANSPARENT)
-            imageButtonFemale.setBackgroundColor(Color.TRANSPARENT)
-            imageButtonMale.setBackgroundColor(Color.TRANSPARENT)
-            genderSwitch.isEnabled = true // Enable switch again
-
-        } else {
-            isFemaleSelected = true
-            isMaleSelected = false
-            imageButtonFemale.setBackgroundColor(Color.LTGRAY) // Reset female button color
-            imageButtonMale.setBackgroundColor(Color.TRANSPARENT) // Reset male button color
-            genderSwitch.isEnabled = false // Disable switch
-
-        }
+        gender = "F" // Set gender for Female
+        imageButtonFemale.setBackgroundColor(Color.LTGRAY)
+        imageButtonMale.setBackgroundColor(Color.TRANSPARENT)
     }
 
     private fun handleSubmission() {
-        // Check if the user has selected either male or female or opted not to disclose
-        if (!isMaleSelected && !isFemaleSelected && !genderSwitch.isChecked) {
-            Toast.makeText(this, "Please select a gender or choose not to disclose", Toast.LENGTH_SHORT).show()
+        if (gender == null) {
+            Toast.makeText(this, "Please select a gender", Toast.LENGTH_SHORT).show()
             return
         }
 
         // Get weight and height inputs
-        val weight = inputWeight.text.toString().toFloatOrNull()
-        val height = inputHeight.text.toString().toFloatOrNull()
+        val weightString = inputWeight.text.toString()
+        val heightString = inputHeight.text.toString()
+
+        val weight = weightString.toFloatOrNull()
+        val height = heightString.toFloatOrNull()
 
         // Check if weight and height inputs are valid
         if (weight != null && height != null && height > 0) {
-            val bmi = weight / (height / 100).pow(2)
-            val formattedBmi = String.format("%.2f", bmi)
-            val bmiCategory = getBMICategory(bmi)
+            // Convert weight and height based on selected units
+            val convertedWeight = convertWeight(weight, weightUnitSpinner.selectedItem.toString())
+            val convertedHeight = convertHeight(height, heightUnitSpinner.selectedItem.toString())
 
-            // Display the BMI result and category
-            bmiResult.text = "BMI: $formattedBmi\nCategory: $bmiCategory"
+            if (convertedHeight > 0) {
+                val bmi = convertedWeight / (convertedHeight / 100).pow(2)
+                val bmiCategory = getBMICategory(bmi)
+
+                // Create an Intent to start BmiResultActivity
+                val intent = Intent(this, BmiResultActivity::class.java).apply {
+                    putExtra("BMI_RESULT", bmi) // Pass the BMI as a Float
+                    putExtra("BMI_CATEGORY", bmiCategory) // Pass the BMI category
+                    putExtra("GENDER", gender ?: "Prefer not to say") // Pass the selected gender
+                    putExtra("AGE", age)  // Pass the age
+                    putExtra("WEIGHT", convertedWeight) // Pass converted weight
+                    putExtra("HEIGHT", convertedHeight) // Pass converted height
+                }
+                startActivity(intent) // Start the new activity
+            } else {
+                Toast.makeText(this, "Invalid height provided", Toast.LENGTH_SHORT).show()
+            }
         } else {
-            bmiResult.text = "Invalid Input"
             Toast.makeText(this, "Please enter valid weight and height", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun convertWeight(weight: Float, unit: String): Float {
+        return when (unit) {
+            "kg" -> weight // No conversion needed
+            "lb" -> weight * 0.453592f // Convert pounds to kilograms
+            else -> weight // fallback
+        }
+    }
+
+    private fun convertHeight(height: Float, unit: String): Float {
+        return when (unit) {
+            "cm" -> height // No conversion needed
+            "ft" -> height * 30.48f // Convert feet to centimeters
+            "in" -> height * 2.54f // Convert inches to centimeters
+            else -> height // fallback
         }
     }
 
@@ -135,20 +172,19 @@ class MainActivity : AppCompatActivity() {
             bmi < 18.5 -> "Underweight"
             bmi < 25 -> "Normal weight"
             bmi < 30 -> "Overweight"
-            else -> "Obese"
+            bmi < 34.9 -> "Class I Obese"
+            bmi < 39.9 -> "Class II Obese"
+            else -> "Class III Obese"
         }
     }
 
     private fun resetInputs() {
         inputWeight.text.clear()
         inputHeight.text.clear()
-        bmiResult.text = "Result" // Reset the result text
-        isMaleSelected = false
-        isFemaleSelected = false
-        genderSwitch.isChecked = false // Reset switch
-        genderLayout.setBackgroundColor(Color.TRANSPARENT) // Reset layout color
+        gender = null // Reset gender
         imageButtonMale.setBackgroundColor(Color.TRANSPARENT) // Reset male button color
         imageButtonFemale.setBackgroundColor(Color.TRANSPARENT) // Reset female button color
-        genderSwitch.isEnabled = true // Enable switch
+        age = 20 // Reset age
+        updateAgeDisplay() // Update age display
     }
 }

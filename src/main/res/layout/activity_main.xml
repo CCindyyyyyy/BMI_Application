@@ -18,10 +18,10 @@
         android:paddingBottom="20dp"
         android:text="BMI Calculator"
         android:textColor="@color/white"
-        android:textSize="25sp"
+        android:textSize="30sp"
         android:layout_gravity="center" />
 
-    <!-- Check gender-->
+    <!-- Gender Selection -->
     <LinearLayout
         android:id="@+id/genderLayout"
         android:layout_width="match_parent"
@@ -45,11 +45,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/notosans"
-                android:textSize="13dp"
+                android:textSize="13sp"
                 android:text="Female"
                 android:textColor="@color/white"
                 android:paddingBottom="10dp"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center" />
 
             <ImageButton
                 android:id="@+id/imageButtonfemale"
@@ -57,7 +57,7 @@
                 android:layout_height="65dp"
                 android:scaleType="fitCenter"
                 android:background="@null"
-                app:srcCompat="@drawable/female"/>
+                app:srcCompat="@drawable/female" />
         </LinearLayout>
 
         <!-- Male Button Layout -->
@@ -77,10 +77,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/notosans"
-                android:textSize="13dp"
+                android:textSize="13sp"
                 android:text="Male"
                 android:textColor="@color/white"
-                android:paddingBottom="10dp"/>
+                android:paddingBottom="10dp" />
 
             <ImageButton
                 android:id="@+id/imageButtonmale"
@@ -90,11 +90,7 @@
                 android:scaleType="fitCenter"
                 app:srcCompat="@drawable/male" />
         </LinearLayout>
-
-
-
     </LinearLayout>
-
 
     <Switch
         android:id="@+id/genderswitch"
@@ -102,89 +98,161 @@
         android:layout_height="wrap_content"
         android:text="I'd like to keep my gender private"
         android:textColor="@color/white"
-        android:textSize="12dp"
+        android:textSize="12sp"
         android:paddingLeft="30dp"
-        android:paddingRight="30dp"/>
-
+        android:paddingRight="30dp" />
 
     <!-- Input Section: Weight and Height -->
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:padding="30dp">
 
+        <!-- Weight Layout -->
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_weight="1"
-            >
+            android:orientation="horizontal"
+            android:weightSum="3"
+            android:layout_marginBottom="10dp">
 
             <TextView
                 android:id="@+id/Weight_text"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/notosans"
-                android:textSize="13dp"
-                android:text="Weight"
+                android:textSize="20sp"
+                android:text="Weight: "
                 android:textColor="@color/white"
-                />
+                android:layout_weight="1" />
 
             <EditText
                 android:id="@+id/inputweight"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="2"
                 android:fontFamily="@font/notosans"
                 android:textColor="@color/white"
-                android:hint="kg"
+                android:hint="Weight "
+                android:textColorHint="@color/white"
+                android:inputType="numberDecimal"
+                android:padding="10dp" />
 
-                />
-
+            <!-- Spinner for weight unit -->
+            <Spinner
+                android:id="@+id/weightUnitSpinner"
+                android:layout_width="98dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:backgroundTint="@color/white"
+                android:spinnerMode="dropdown" />
         </LinearLayout>
 
+        <!-- Height Layout -->
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_weight="1">
+            android:orientation="horizontal"
+            android:weightSum="3">
 
             <TextView
                 android:id="@+id/Height_Selection"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/notosans"
                 android:textColor="@color/white"
-                android:textSize="13sp"
-                android:text="Height" />
+                android:textSize="20sp"
+                android:text="Height: "
+                android:layout_weight="1" />
 
             <EditText
                 android:id="@+id/inputheight"
-                android:textColor="@color/white"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="2"
                 android:fontFamily="@font/notosans"
-                android:hint="cm"
-                    />
+                android:textColor="@color/white"
+                android:hint="Height"
+                android:textColorHint="@color/white"
+                android:inputType="numberDecimal"
+                android:padding="10dp" />
+
+            <!-- Spinner for height unit -->
+            <Spinner
+                android:id="@+id/heightUnitSpinner"
+                android:layout_width="98dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="@color/white"
+                android:spinnerMode="dropdown"
+                android:background="@color/white" />
         </LinearLayout>
     </LinearLayout>
 
-
+    <!-- Age Display Section -->
     <LinearLayout
+        android:id="@+id/ageControlLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/rounded_corners"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:layout_gravity="center">
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="10dp">
 
-        <TextView
-            android:id="@+id/BMICaculator"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/plusLayout"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            />
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
 
+            <ImageButton
+                android:id="@+id/imageplus"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:background="@null"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/plus" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ageDisplayLayout"
+            android:background="@drawable/rounded_corners"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/ageText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Age : 20"
+                android:fontFamily="@font/notosans"
+                android:textColor="@color/white"
+                android:padding="5dp"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/minusLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/imageminus"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:background="@null"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/minus" />
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -198,16 +266,13 @@
             android:id="@+id/submitbutton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Submit"
-            android:layout_marginEnd="8dp"/> <!-- Add margin for spacing -->
+            android:text="Calculate"
+            android:layout_marginEnd="8dp" />
 
         <Button
             android:id="@+id/resetbutton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Reset"/>
-
+            android:text="Reset" />
     </LinearLayout>
-
-
 </LinearLayout>

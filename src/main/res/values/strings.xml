@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">BMI Application</string>
+    <string name="bmi_category_image">BMI Category Image</string>
 </resources>
