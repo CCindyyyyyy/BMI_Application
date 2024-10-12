@@ -14,4 +14,4 @@ It provides an interface to input personal data and displays the corresponding B
 
 ## App Interface
 
-![Screenshot](app/res/photos/img1.png)
+![Screenshot](photos/img1.png)
